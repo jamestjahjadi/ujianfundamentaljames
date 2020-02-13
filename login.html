@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,td,th {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+        table{
+            margin: 0 auto;
+            text-align: center;   
+        }
+        h1,h2,h3{
+            text-align: center;
+        }
+    </style>
+    
+</head>
+<body id='body1'>
+    <center id='center'>
+        <h1>Selamat Datang</h1>
+        Nama: <input type="text" placeholder="masukan nama" id="nama"><br><br>
+        Password: <input type="password" id="password" placeholder="masukan password"> <br><br>
+        <button onclick="login()">login</button> &nbsp; <button onclick="register()">register</button>
+    </center>
+    <h3 id="h3"></h3>
+</body>
+</html>
+
+
+
+
+
+<script>
+    class listdata{
+        constructor(user,password,role){
+            this.user=user
+            this.password=password
+            this.role=role
+        }
+    }
+
+var listpemakai=[
+    new listdata('james','12','admin'),
+    new listdata('corona','123','user')
+]
+
+
+class listadmin{
+    constructor(barang,gambar,price,stock){
+        this.barang=barang
+        this.gambar=gambar
+        this.price=price
+        this.stock=stock
+    }
+}
+
+var listbarang=[
+    new listadmin('3M The Holy Grail of All Mask','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRQugeK1wfuN1plTMbQJFcm-0tY7nov1THNH2Jf3kVj72uvcZOJ',1500000,10),
+    new listadmin('bowin x offwhite','file:///C:/Users/James/Downloads/2b1c97d4-6a32-458a-93b0-e1fcf4102847%20(1).jpg',135000,5),
+    new listadmin('Corona Virus ','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSWxLAWlY2eXO2pn5dLoHkqtkqNgkaP4HSU0_AI6lYbjwwHDd3N',1,10)
+]
+
+const login=()=>{
+    var name=document.getElementById('nama').value
+    var pass=document.getElementById('password').value
+    listpemakai.forEach((val,index)=>{
+        if(val.user==name && val.password==pass){
+            if(val.role=='user'){
+            alert(`Welcome ${val.user}`)
+            tablebaranguser()
+        }else{
+            alert(`Hello ${val.user}`)
+            tablebarangadmin()
+        }
+    }
+}
+)
+}
+
+const logout=()=>{
+   document.getElementById('body1').innerHTML=`<center id='center'>
+        <h1>Selamat Datang</h1>
+        Nama: <input type="text" placeholder="masukan nama" id="nama"><br><br>
+        Password: <input type="password" id="password" placeholder="masukan password"> <br><br>
+        <button onclick="login()">login</button> &nbsp; <button onclick="register()">register</button>
+    </center>`
+}
+
+const tablebaranguser=()=>{    
+              var tableU=``
+              tableU+=`
+              <table>
+                <thead>
+                    <tr>
+                 <td>No</td>
+                <td>Nama</td>
+                <td>Gambar</td>
+                <td>Price</td>
+                <td>Stock</td>
+            </tr>
+            </thead>
+            <tbody id='tbody1'>
+            </tbody>
+            </table>
+            <br>
+            <center>
+            <button onclick='logout()'>Logout</button>
+            </center>
+            `
+            document.getElementById('body1').innerHTML=tableU
+            var tbluser=''
+            listbarang.forEach((val1,index1)=>{
+        tbluser+=`
+        <tr>
+            <td>${index1+1}</td>
+            <td>${val1.barang}</td>
+            <td><image src=${val1.gambar} alt=${index1} height='200px'></td>
+            <td>${val1.price}</td>
+            <td>${val1.stock}</td>
+        </tr>
+        `
+        document.getElementById('tbody1').innerHTML=tbluser
+             }
+             )  
+            }
+
+const tablebarangadmin=()=>{
+    var tableadmin=``
+    tableadmin+=`
+              <table>
+                <thead>
+            <tr>
+                <td>No</td>
+                <td>Nama</td>
+                <td>Gambar</td>
+                <td>Price</td>
+                <td>Stock</td>
+                <td>action</td>
+            </tr>
+            </thead>
+            <tbody id='tbody1'>
+            </tbody>
+            <tfoot id='tfoot1'>
+            </tfoot>
+            </table>
+            <br>
+            <center>
+            <button onclick='logout()'>Logout</button>
+            </center>
+            `
+            document.getElementById('body1').innerHTML=tableadmin
+
+            var tbladmin=''
+            listbarang.forEach((val1,index1)=>{
+                if(index1==indexedit){
+            tbladmin+=
+            `
+        <tr>
+        <td>${index1+1}</td>
+        <td><input type='text' id='editbarang' value=${listbarang[index1].barang}></td>
+        <td><input type='text' id='editgambar' value=${listbarang[index1].gambar}></td>
+        <td><input type='number' id='editharga' value=${listbarang[index1].price}></td>
+        <td><input type='number' id='editstock' value=${listbarang[index1].stock}></td>
+        <td>
+            <button onclick='save(${index1})'>save</button>
+            <button onclick='cancel(${index1})'>cancel</button>    
+        </td>
+    </tr>
+    `
+        }else{
+        tbladmin+=`
+        <tr>
+            <td>${index1+1}</td>
+            <td>${val1.barang}</td>
+            <td><image src=${val1.gambar} alt=${index1} height='200px'></td>
+            <td>${val1.price}</td>
+            <td>${val1.stock}</td>
+            <td>
+                <button onclick='deletebarang(${index1})'>delete</button>
+                <button onclick='edit(${index1})'>edit</button>
+            </td>
+        </tr>
+        `
+    }
+        document.getElementById('tbody1').innerHTML=tbladmin
+
+        var inputbarang=`
+            <tr>
+                <td></td>
+                <td><input type="text" placeholder="masukan nama barang" id="inputbarang"></td>
+                <td><input type="text" placeholder="masukan gambar barang" id="inputgambar"></td>
+                <td><input type="text" placeholder="masukan harga barang" id="inputharga"></td>
+                <td><input type="text" placeholder="masukan stock barang" id="inputstock">
+                <td><button onclick='inputdatabarang()'>Tambah Barang</button></td>
+            </tr>  
+        `
+        document.getElementById('tfoot1').innerHTML=inputbarang
+             }
+             )  
+}
+
+const inputdatabarang=()=>{
+    var newbarang=document.getElementById('inputbarang').value
+    var newgambar=document.getElementById('inputgambar').value
+    var newharga=document.getElementById('inputharga').value
+    var newstock=document.getElementById('inputstock').value
+
+    if(newbarang=='' || newgambar=='' || newharga=='' || newstock==''){
+        alert('mohon input semua ya')
+    }else{
+    listbarang.push(new listadmin(newbarang,newgambar,newharga,newstock))
+    document.getElementById('inputbarang').value=''
+    document.getElementById('inputgambar').value=''
+    document.getElementById('inputharga').value=''
+    document.getElementById('inputstock').value=''
+    tablebarangadmin()
+    }
+}
+
+const deletebarang=(index)=>{
+   var konfirmasi=confirm(`anda yakin ingin menghapus ${listbarang[index].barang}`)
+    if(konfirmasi){listbarang.splice(index, 1)
+    tablebarangadmin()
+    }else{
+        tablebarangadmin()
+    }
+}
+
+var indexedit=-1
+const edit=(param)=>{
+    indexedit=param
+    tablebarangadmin()
+}
+
+const save=(param)=>{
+    var newbarang=document.getElementById('editbarang').value
+    var newgambar=document.getElementById('editgambar').value
+    var newharga=document.getElementById('editharga').value
+    var newstock=document.getElementById('editstock').value
+
+    if(newbarang==''){
+        newbarang=listbarang[param].barang
+    }
+    if(newgambar==''){
+        newgambar=listbarang[param].gambar
+    }
+    if(newharga==''){
+        newharga=listbarang[param].price
+    }
+    if(newstock==''){
+        newstock=listbarang[param].stock
+    }
+    indexedit=-1
+    listbarang.splice(param, 1 , new listadmin(newbarang,newgambar,newharga,newstock))
+    tablebarangadmin()
+}
+
+const cancel=(param)=>{
+    indexedit=-1
+    tablebarangadmin()
+}
+
+const register=()=>{
+    var nama=document.getElementById('nama').value
+    var password=document.getElementById('password').value
+    var role='user'
+    for(i=0;i<listpemakai.length;i++){
+        if(nama==listpemakai[i].user){
+             return alert('username sudah dipakai')
+        }else{
+           listpemakai.push(new listdata(nama,password,role))
+          return alert('anda berhasil register')
+        }
+    }
+}
+</script>
