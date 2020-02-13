@@ -51,18 +51,16 @@ var listpemakai=[
 
 
 class listadmin{
-    constructor(barang,gambar,price,stock){
-        this.barang=barang
-        this.gambar=gambar
-        this.price=price
-        this.stock=stock
+    constructor(kegiatan,hari,poster){
+        this.kegiatan=kegiatan
+        this.hari=hari
+        this.poster=poster
     }
 }
 
-var listbarang=[
-    new listadmin('3M The Holy Grail of All Mask','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRQugeK1wfuN1plTMbQJFcm-0tY7nov1THNH2Jf3kVj72uvcZOJ',1500000,10),
-    new listadmin('bowin x offwhite','file:///C:/Users/James/Downloads/2b1c97d4-6a32-458a-93b0-e1fcf4102847%20(1).jpg',135000,5),
-    new listadmin('Corona Virus ','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSWxLAWlY2eXO2pn5dLoHkqtkqNgkaP4HSU0_AI6lYbjwwHDd3N',1,10)
+var listkegiatan=[
+    new listadmin('lari','senin','inputgambar'),
+    new listadmin('estafet','selasa','inputgambar')
 ]
 
 const login=()=>{
@@ -98,10 +96,9 @@ const tablebaranguser=()=>{
                 <thead>
                     <tr>
                  <td>No</td>
-                <td>Nama</td>
-                <td>Gambar</td>
-                <td>Price</td>
-                <td>Stock</td>
+                <td>kegiatan</td>
+                <td>hari</td>
+                <td>gambar</td>
             </tr>
             </thead>
             <tbody id='tbody1'>
@@ -114,14 +111,13 @@ const tablebaranguser=()=>{
             `
             document.getElementById('body1').innerHTML=tableU
             var tbluser=''
-            listbarang.forEach((val1,index1)=>{
+            listkegiatan.forEach((val1,index1)=>{
         tbluser+=`
         <tr>
             <td>${index1+1}</td>
-            <td>${val1.barang}</td>
+            <td>${val1.kegiatan}</td>
+            <td>${val1.hari}</td>
             <td><image src=${val1.gambar} alt=${index1} height='200px'></td>
-            <td>${val1.price}</td>
-            <td>${val1.stock}</td>
         </tr>
         `
         document.getElementById('tbody1').innerHTML=tbluser
@@ -136,10 +132,9 @@ const tablebarangadmin=()=>{
                 <thead>
             <tr>
                 <td>No</td>
-                <td>Nama</td>
-                <td>Gambar</td>
-                <td>Price</td>
-                <td>Stock</td>
+                <td>kegiatan</td>
+                <td>hari</td>
+                <td>gambar</td>
                 <td>action</td>
             </tr>
             </thead>
@@ -150,22 +145,35 @@ const tablebarangadmin=()=>{
             </table>
             <br>
             <center>
+            <h1 id="h1"></h1>
+                <br>
             <button onclick='logout()'>Logout</button>
             </center>
             `
             document.getElementById('body1').innerHTML=tableadmin
 
             var tbladmin=''
-            listbarang.forEach((val1,index1)=>{
+            listkegiatan.forEach((val1,index1)=>{
                 if(index1==indexedit){
             tbladmin+=
             `
         <tr>
         <td>${index1+1}</td>
-        <td><input type='text' id='editbarang' value=${listbarang[index1].barang}></td>
-        <td><input type='text' id='editgambar' value=${listbarang[index1].gambar}></td>
-        <td><input type='number' id='editharga' value=${listbarang[index1].price}></td>
-        <td><input type='number' id='editstock' value=${listbarang[index1].stock}></td>
+        <td><input type='text' id='editkegiatan' value=${listkegiatan[index1].kegiatan}></td>
+        <td>
+                                <select id="edithari" >
+                                    <option hidden value="">pilih hari ..</option>
+                                    <option value="senin">senin</option>
+                                    <option value="selasa">selasa</option>
+                                    <option value="rabu">rabu</option>
+                                    <option value="kamis">kamis</option>
+                                    <option value="jumat">jumat</option>
+                                    <option value="sabtu">sabtu</option>
+                                    <option value="minggu">minggu</option>
+                                </select>
+                            
+                            </td>
+        <td><input type='text' id='editgambar' value=${listkegiatan[index1].poster}></td>
         <td>
             <button onclick='save(${index1})'>save</button>
             <button onclick='cancel(${index1})'>cancel</button>    
@@ -176,12 +184,11 @@ const tablebarangadmin=()=>{
         tbladmin+=`
         <tr>
             <td>${index1+1}</td>
-            <td>${val1.barang}</td>
+            <td>${val1.kegiatan}</td>
+            <td>${val1.hari}</td>
             <td><image src=${val1.gambar} alt=${index1} height='200px'></td>
-            <td>${val1.price}</td>
-            <td>${val1.stock}</td>
             <td>
-                <button onclick='deletebarang(${index1})'>delete</button>
+                <button onclick='deletekegiatan(${index1})'>delete</button>
                 <button onclick='edit(${index1})'>edit</button>
             </td>
         </tr>
@@ -192,10 +199,21 @@ const tablebarangadmin=()=>{
         var inputbarang=`
             <tr>
                 <td></td>
-                <td><input type="text" placeholder="masukan nama barang" id="inputbarang"></td>
+                <td><input type="text" placeholder="masukan nama kegiatan" id="inputkegiatan"></td>
+                <td>
+                                <select id="inputhari" >
+                                    <option hidden value="">pilih hari ..</option>
+                                    <option value="senin">senin</option>
+                                    <option value="selasa">selasa</option>
+                                    <option value="rabu">rabu</option>
+                                    <option value="kamis">kamis</option>
+                                    <option value="jumat">jumat</option>
+                                    <option value="sabtu">sabtu</option>
+                                    <option value="minggu">minggu</option>
+                                </select>
+                            
+                            </td>
                 <td><input type="text" placeholder="masukan gambar barang" id="inputgambar"></td>
-                <td><input type="text" placeholder="masukan harga barang" id="inputharga"></td>
-                <td><input type="text" placeholder="masukan stock barang" id="inputstock">
                 <td><button onclick='inputdatabarang()'>Tambah Barang</button></td>
             </tr>  
         `
@@ -205,26 +223,25 @@ const tablebarangadmin=()=>{
 }
 
 const inputdatabarang=()=>{
-    var newbarang=document.getElementById('inputbarang').value
+    var newkegiatan=document.getElementById('inputkegiatan').value
+    var newhari=document.getElementById('inputhari').value
     var newgambar=document.getElementById('inputgambar').value
-    var newharga=document.getElementById('inputharga').value
-    var newstock=document.getElementById('inputstock').value
 
-    if(newbarang=='' || newgambar=='' || newharga=='' || newstock==''){
+
+    if(newkegiatan=='' || newhari=='' || newgambar==''){
         alert('mohon input semua ya')
     }else{
-    listbarang.push(new listadmin(newbarang,newgambar,newharga,newstock))
-    document.getElementById('inputbarang').value=''
+    listkegiatan.push(new listadmin(newkegiatan,newhari,newgambar))
+    document.getElementById('inputkegiatan').value=''
+    document.getElementById('inputhari').value=''
     document.getElementById('inputgambar').value=''
-    document.getElementById('inputharga').value=''
-    document.getElementById('inputstock').value=''
     tablebarangadmin()
     }
 }
 
-const deletebarang=(index)=>{
-   var konfirmasi=confirm(`anda yakin ingin menghapus ${listbarang[index].barang}`)
-    if(konfirmasi){listbarang.splice(index, 1)
+const deletekegiatan=(index)=>{
+   var konfirmasi=confirm(`anda yakin ingin menghapus ${listkegiatan[index].kegiatan}`)
+    if(konfirmasi){listkegiatan.splice(index, 1)
     tablebarangadmin()
     }else{
         tablebarangadmin()
@@ -238,25 +255,20 @@ const edit=(param)=>{
 }
 
 const save=(param)=>{
-    var newbarang=document.getElementById('editbarang').value
+    var newkegiatan=document.getElementById('editkegiatan').value
+    var newhari=document.getElementById('edithari').value
     var newgambar=document.getElementById('editgambar').value
-    var newharga=document.getElementById('editharga').value
-    var newstock=document.getElementById('editstock').value
-
-    if(newbarang==''){
-        newbarang=listbarang[param].barang
+    if(newkegiatan==''){
+        newbarang=listkegiatan[param].kegiatan
+    }
+    if(newhari==''){
+        newgambar=listkegiatan[param].hari
     }
     if(newgambar==''){
-        newgambar=listbarang[param].gambar
-    }
-    if(newharga==''){
-        newharga=listbarang[param].price
-    }
-    if(newstock==''){
-        newstock=listbarang[param].stock
+        newharga=listkegiatan[param].poster
     }
     indexedit=-1
-    listbarang.splice(param, 1 , new listadmin(newbarang,newgambar,newharga,newstock))
+    listkegiatan.splice(param, 1 , new listadmin(newkegiatan,newhari,newgambar))
     tablebarangadmin()
 }
 
